@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Increff | Return Reconciliation AI</title>
+    <!-- <link rel="icon" href="Increff Fevicon.jpeg" type="image/x-icon"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="increff-bg">
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <nav class="navbar navbar-expand navbar-light bg-white border-bottom fixed-top py-2 px-4 shadow-sm">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center gap-3">
+                <img src="https://cdn.prod.website-files.com/64dacf5e829926e42212e23f/67ea4b4e92d4fccc9bfe60c2_65d6d8b6f1213f493da7d67f_Original%2520Logo_Increff%2520(1).png"
+                    alt="Increff" height="22">
+                <span class="text-secondary opacity-25">|</span>
+                <div class="d-flex align-items-center gap-1">
+                    <span class="inc-text-xs fw-bold text-gray-500 uppercase tracking-wider m-0">Return Genie</span>
+                    <img src="/resources/genie.png" alt="Return Genie logo" id="Genie">
+                </div>
+            </div>
+            <div class="ms-auto d-flex align-items-center gap-3 border-start ps-3">
+                <span class="inc-text-xs text-secondary font-monospace">IST +05:30</span>
+                <button onclick="logout()" class="btn btn-link p-0 text-danger text-decoration-none ms-2">
+                    <i class="fa-solid fa-power-off"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid px-4 mt-5 pt-4">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb inc-text-xs uppercase fw-bold tracking-tighter">
+                <!-- <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">Operations</a></li> -->
+                <li class="breadcrumb-item active text-primary" aria-current="page">Reconciliation</li>
+            </ol>
+        </nav>
+
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8 col-xl-6">
+                <div class="increff-card shadow-sm border-0 rounded-1 animate-fade-in">
+                    <div
+                        class="card-header bg-white border-bottom px-4 py-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-primary"></i>
+                            <h2 class="inc-text-sm fw-bold text-gray-800 m-0 uppercase tracking-tight">Sync Marketplace
+                                Expectations</h2>
+                        </div>
+                        <span
+                            class="badge bg-success-subtle text-success border border-success border-opacity-25 rounded-1">System
+                            Ready</span>
+                    </div>
+
+                    <div class="card-body p-4 p-md-5">
+                        <div id="ui-upload" class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label inc-text-xs fw-bold text-secondary uppercase">Please Select
+                                    Marketplace</label>
+                                <select id="marketplace-select"
+                                    class="form-select border-gray-300 rounded-1 inc-text-sm shadow-none focus-primary">
+                                    <option value="" disabled selected>Select Source...</option>
+                                    <option value="AMAZON_SC">AMAZON_SC</option>
+                                    <option value="FLIPKART">FLIPKART</option>
+                                    <option value="MYNTRAV4">MYNTRAV4</option>
+                                    <option value="TATACLIQ">TATACLIQ</option>
+                                    <option value="NYKAA">NYKAA</option>
+                                </select>
+                                <div id="marketplace-error" class="inc-text-xs text-danger mt-1 d-none"><i
+                                        class="fa-solid fa-circle-exclamation"></i> Please select a marketplace</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label inc-text-xs fw-bold text-secondary uppercase">Enter Email
+                                    ID</label>
+                                <input type="text" id="user-id"
+                                    class="form-control border-gray-300 rounded-1 inc-text-sm shadow-none focus-primary"
+                                    placeholder="e.g. abc@gmail.com">
+                                <div id="email-error" class="inc-text-xs text-danger mt-1 d-none"><i
+                                        class="fa-solid fa-circle-exclamation"></i> Please enter your email ID</div>
+                            </div>
+                            <div class="col-12">
+                                <div id="drop-zone"
+                                    class="increff-dropzone p-5 text-center border-2 border-dashed rounded-1 transition-all cursor-pointer">
+                                    <input type="file" id="file-input" class="d-none" accept=".csv,.xlsx,.xls">
+                                    <i class="fa-solid fa-file-arrow-up text-primary fs-2 mb-3"></i>
+                                    <p id="file-label" class="inc-text-sm fw-bold text-gray-700 mb-1">Drag Marketplace
+                                        Report or Click to Browse</p>
+                                    <p class="inc-text-xs text-gray-400">Supported formats: .xlsx, .xls, .csv <br>(Max
+                                        Rows Limit : 3000)</p>
+                                </div>
+                                <div id="file-error" class="inc-text-xs text-danger mt-1 d-none text-center"><i
+                                        class="fa-solid fa-circle-exclamation"></i> Please upload a marketplace report
+                                </div>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button id="submit-btn"
+                                    class="btn btn-primary rounded-1 inc-text-xs fw-bold uppercase tracking-widest px-4 py-2 mt-2">Initialize
+                                    Sync</button>
+                            </div>
+                        </div>
+
+                        <div id="ui-processing" class="d-none text-center py-5">
+                            <div class="terminal-box text-start p-3 mb-4 font-monospace shadow-inner">
+                                <div id="terminal-logs" class="inc-text-xs text-info">
+                                    <p class="mb-1 text-secondary opacity-50">&gt; Booting Reconciliation Engine...</p>
+                                </div>
+                            </div>
+                            <div class="spinner-border text-primary spinner-border-sm mb-3"></div>
+                            <p class="inc-text-xs fw-bold text-gray-600 uppercase tracking-widest">Processing Data...
+                            </p>
+                        </div>
+
+                        <div id="ui-success" class="d-none text-center py-5 animate-slide-up">
+                            <div class="success-icon-box mx-auto mb-4">
+                                <i class="fa-solid fa-check text-white fs-4"></i>
+                            </div>
+                            <h4 class="inc-text-lg fw-bold text-gray-800 mb-2">Sync Process Completed</h4>
+                            <p class="inc-text-sm text-gray-500 mb-4 px-md-5">The output file will be delivered to your
+                                email. Thank You.</p>
+                            <button id="reset-btn"
+                                class="btn btn-primary rounded-1 inc-text-xs fw-bold uppercase px-4 py-2">Start New
+                                Sync</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,214 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: #4F46E5;
+    --primary-hover: #4338CA;
+    --primary-glow: rgba(79, 70, 229, 0.4);
+    --secondary: #10B981;
+    --bg-gradient-1: #e0e7ff;
+    --bg-gradient-2: #f3e8ff;
+    --bg-gradient-3: #fce7f3;
+}
+
+body {
+    background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), #e0f2fe);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Outfit', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1e293b;
+    min-height: 100vh;
+}
+
+#Genie {
+    width: 40px;
+    height: auto;
+    opacity: 0.9;
+    background-color: transparent;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.increff-bg {
+    background: transparent !important;
+}
+
+/* Glassmorphism Card styling */
+.increff-card {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-left: 5px solid var(--primary) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+}
+
+.increff-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.12), 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Typography Sizes */
+.inc-text-xs { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; }
+.inc-text-sm { font-size: 0.875rem; font-weight: 500; }
+.inc-text-lg { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+
+/* Focus and Interaction States for Inputs */
+.form-control, .form-select {
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.6rem 1rem;
+}
+
+.form-control:focus, .form-select:focus, .focus-primary:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+    transform: translateY(-2px);
+}
+
+/* Enhanced Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-hover)) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 10px -1px var(--primary-glow), 0 2px 4px -1px var(--primary-glow);
+    padding: 0.6rem 1.5rem;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transition: left 0.6s ease;
+    z-index: -1;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 20px -3px var(--primary-glow), 0 4px 6px -2px var(--primary-glow);
+}
+
+.btn-primary:hover::before { left: 100%; }
+.btn-primary:active { transform: translateY(0) scale(0.98); }
+
+/* Dropzone with pulsing animation */
+.increff-dropzone {
+    background: rgba(248, 250, 252, 0.6);
+    border: 2px dashed #94a3b8;
+    border-radius: 16px !important;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.increff-dropzone:hover, .drop-zone-active {
+    background: rgba(238, 242, 255, 0.8);
+    border-color: var(--primary) !important;
+    transform: scale(1.02);
+    box-shadow: inset 0 0 20px rgba(79, 70, 229, 0.05);
+}
+
+.increff-dropzone i {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+}
+
+.increff-dropzone:hover i {
+    transform: translateY(-10px) scale(1.2);
+    color: var(--primary) !important;
+}
+
+/* Terminal Logging UI */
+.terminal-box {
+    background-color: #0f172a;
+    border-radius: 12px;
+    height: 140px;
+    overflow-y: auto;
+    border: 1px solid #334155;
+    border-left: 4px solid var(--secondary);
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Component Decoration */
+.success-icon-box {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10B981, #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+    animation: scaleInBounce 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes scaleInBounce {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Navbar Glassmorphism */
+.navbar {
+    background: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Animations */
+.animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
+@keyframes slideUp {
+    from { transform: translateY(40px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Helpers */
+.uppercase { text-transform: uppercase; letter-spacing: 0.06em; }
+.tracking-widest { letter-spacing: 0.12em; }
+.tracking-tighter { letter-spacing: -0.04em; }
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Page Exit Transition */
+.animate-page-exit {
+    animation: pageExit 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+}
+
+@keyframes pageExit {
+    from { opacity: 1; transform: scale(1); filter: blur(0px); }
+    to { opacity: 0; transform: scale(1.05); filter: blur(10px); }
+}
