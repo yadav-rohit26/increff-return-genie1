@@ -120,17 +120,17 @@ const AdminPortal = () => {
             <div className="col-md-3">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Client Name</label>
               <input type="text" className="form-control inc-text-sm shadow-none focus-primary" required
-                value={newClient.clientName} onChange={e => setNewClient({ ...newClient, clientName: e.target.value })} placeholder="e.g. Nike" />
+                value={newClient.clientName} onChange={e => setNewClient({ ...newClient, clientName: e.target.value })} placeholder="e.g. Adidas" />
             </div>
             <div className="col-md-2">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">DB ID</label>
               <input type="text" className="form-control inc-text-sm shadow-none focus-primary" required
-                value={newClient.dbId} onChange={e => setNewClient({ ...newClient, dbId: e.target.value })} placeholder="e.g. DB_123" />
+                value={newClient.dbId} onChange={e => setNewClient({ ...newClient, dbId: e.target.value })} placeholder="e.g. 847" />
             </div>
             <div className="col-md-2">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Username</label>
               <input type="text" className="form-control inc-text-sm shadow-none focus-primary" required
-                value={newClient.username} onChange={e => setNewClient({ ...newClient, username: e.target.value })} placeholder="nike_admin" />
+                value={newClient.username} onChange={e => setNewClient({ ...newClient, username: e.target.value })} placeholder="adidas_admin" />
             </div>
             <div className="col-md-3">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Password</label>
@@ -157,7 +157,7 @@ const AdminPortal = () => {
             </div>
             <div className="col-12 mt-4 pt-2 border-top text-end">
               <button type="submit" className="btn btn-primary px-4 py-2 fw-bold tracking-widest uppercase inc-text-xs rounded-1" disabled={isSubmitting}>
-                {isSubmitting ? <><i className="fa-solid fa-circle-notch fa-spin me-2"></i> Deploying...</> : 'Add'}
+                {isSubmitting ? <><i className="fa-solid fa-circle-notch fa-spin me-2"></i> Creating...</> : 'Add'}
               </button>
             </div>
           </form>
@@ -243,10 +243,10 @@ const AdminPortal = () => {
                             >
                               <i className="fa-solid fa-trash-alt fs-6"></i>
                             </button>
-                            <div
+                            {/* <div
                               style={{ width: '15px', height: '15px', borderRadius: '50%', backgroundColor: client.themeColor, marginLeft: '6px' }}
                               title={`Theme Color: ${client.themeColor}`}
-                            ></div>
+                            ></div> */}
                           </div>
                         </div>
 
