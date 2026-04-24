@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'ADIDAS_INDIA'
   },
+  dbId: {
+    type: String
+  },
   clientName: {
     type: String,
     required: true

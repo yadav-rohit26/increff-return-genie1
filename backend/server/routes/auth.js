@@ -31,6 +31,7 @@ router.post('/login', async (req, res) => {
       userId: user.username, // Using username as userId for Gmail delivery mapping
       username: user.username,
       clientId: user.clientId,
+      dbId: user.dbId,
       id: user._id,
       role: user.role
     };
@@ -42,6 +43,7 @@ router.post('/login', async (req, res) => {
       id: user._id,
       username: user.username,
       clientId: user.clientId,
+      dbId: user.dbId,
       clientName: user.clientName,
       themeColor: user.themeColor,
       role: user.role,
@@ -77,7 +79,7 @@ router.post('/toggle-status', async (req, res) => {
 // Admin create a new client
 router.post('/client', async (req, res) => {
   try {
-    const { username, password, clientName, themeColor, pod } = req.body;
+    const { username, password, clientName, themeColor, pod, dbId } = req.body;
     
     // Check if user already exists
     const existingUser = await User.findOne({ username });
@@ -89,6 +91,7 @@ router.post('/client', async (req, res) => {
       username,
       password, // Password hashing is handled by pre-save hook in User model
       clientName,
+      dbId,
       themeColor: themeColor || '#000000',
       role: 'client',
       pod: pod || 'POD 2'

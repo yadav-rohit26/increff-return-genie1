@@ -11,7 +11,7 @@ const AdminPortal = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newClient, setNewClient] = useState({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: 'POD 2' });
+  const [newClient, setNewClient] = useState({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: 'POD 2', dbId: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [clientToDelete, setClientToDelete] = useState(null);
@@ -34,7 +34,7 @@ const AdminPortal = () => {
     setIsSubmitting(false);
     if (success) {
       setShowAddForm(false);
-      setNewClient({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: 'POD 2' });
+      setNewClient({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: 'POD 2', dbId: '' });
     } else {
       setErrorMsg(message);
     }
@@ -123,21 +123,26 @@ const AdminPortal = () => {
                 value={newClient.clientName} onChange={e => setNewClient({ ...newClient, clientName: e.target.value })} placeholder="e.g. Nike" />
             </div>
             <div className="col-md-2">
+              <label className="form-label inc-text-xs fw-bold text-secondary uppercase">DB ID</label>
+              <input type="text" className="form-control inc-text-sm shadow-none focus-primary" required
+                value={newClient.dbId} onChange={e => setNewClient({ ...newClient, dbId: e.target.value })} placeholder="e.g. DB_123" />
+            </div>
+            <div className="col-md-2">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Username</label>
               <input type="text" className="form-control inc-text-sm shadow-none focus-primary" required
                 value={newClient.username} onChange={e => setNewClient({ ...newClient, username: e.target.value })} placeholder="nike_admin" />
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Password</label>
               <div className="input-group">
                 <input type="text" className="form-control inc-text-sm shadow-none focus-primary" required
                   value={newClient.password} onChange={e => setNewClient({ ...newClient, password: e.target.value })} placeholder="Enter or generate" />
                 <button type="button" className="btn btn-outline-secondary" onClick={generatePassword} title="Generate Password">
-                  <i className="fa-solid fa-dice"></i> Generate
+                  <i className="fa-solid fa-dice"></i>
                 </button>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2">
               <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Pod</label>
               <select
                 className="form-select inc-text-sm shadow-none focus-primary"
@@ -213,6 +218,9 @@ const AdminPortal = () => {
                         <div className="d-flex justify-content-between align-items-start mb-3">
                           <div>
                             <h5 className="inc-text-sm fw-bold text-gray-800 m-0">{client.clientName}</h5>
+                            <div className="inc-text-xs text-secondary mt-1" style={{ fontSize: '0.65rem' }}>
+                              {client.dbId ? `DB: ${client.dbId}` : 'No DB ID'}
+                            </div>
                             {isDeactivated ? (
                               <span className="badge bg-danger-subtle text-danger border border-danger border-opacity-25 rounded-1 mt-1" style={{ fontSize: '0.6rem' }}>Deactivated</span>
                             ) : (
