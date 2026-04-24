@@ -24,25 +24,28 @@ router.post('/initialize', verifyToken, upload.single('file'), async (req, res) 
     const fileBlob = new Blob([file.buffer], { type: file.mimetype });
     formData.append('file', fileBlob, file.originalname);
     formData.append('marketplace', marketplace);
-    
+
     // Automatically append clientId from the JWT
     if (clientId) formData.append('clientId', clientId);
-    
+
     // Use the explicit email from frontend as userId for n8n Gmail delivery, fallback to JWT userId
     const finalUserId = email || jwtUserId;
     if (finalUserId) formData.append('userId', finalUserId);
 
     const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
     if (!N8N_WEBHOOK_URL) {
-      console.log('N8N_WEBHOOK_URL is temporarily disconnected, bypassing n8n sync.');
-      return res.json({ success: true, message: 'Sync initialized successfully (mocked)', data: {} });
+      console.error('N8N_WEBHOOK_URL is disconnected. Failing sync.');
+      return res.status(503).json({ success: false, message: 'n8n is disconnected. Cannot process reconciliation.' });
     }
 
-    // Forward the data to n8n
+    // Forward the data to n8n with an increased timeout (10 minutes)
     const response = await axios.post(N8N_WEBHOOK_URL, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      timeout: 600000, // 10 minutes timeout
+      maxBodyLength: Infinity,
+      maxContentLength: Infinity
     });
 
     res.json({ success: true, message: 'Sync initialized successfully', data: response.data });
