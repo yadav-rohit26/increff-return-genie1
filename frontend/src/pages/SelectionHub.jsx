@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const SelectionHub = () => {
   const { activeClient } = useAuth();
   const navigate = useNavigate();
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   if (!activeClient) return null;
 
@@ -48,7 +49,7 @@ const SelectionHub = () => {
                   <p className="inc-text-xs text-secondary mt-2 mb-0">Access your primary Omni gateway portal.</p>
                 </div>
               </div> */}
-              
+
 
               {/* Box 2: Return Reconciliation */}
               <div className="col-md-6 col-lg-4">
@@ -70,7 +71,7 @@ const SelectionHub = () => {
                 <div
                   className="increff-card p-5 text-center h-100 d-flex flex-column align-items-center justify-content-center cursor-pointer hover-glow"
                   style={{ border: '2px solid transparent', transition: 'all 0.3s ease', cursor: 'pointer', borderRadius: '16px' }}
-                  onClick={() => alert("Auto-Claim SPF module is currently coming soon.")}
+                  onClick={() => setShowComingSoon(true)}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = primaryColor; e.currentTarget.style.boxShadow = `0 10px 40px ${primaryColor}20`; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.boxShadow = '0 10px 40px rgba(0,0,0,0.08)'; }}
                 >
@@ -85,6 +86,37 @@ const SelectionHub = () => {
           </div>
         </div>
       </div >
+
+      {/* Coming Soon Modal */}
+      {showComingSoon && (
+        <div className="modal fade show animate-fade-in" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1" onClick={() => setShowComingSoon(false)}>
+          <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content border-0 shadow-lg rounded-4">
+              <div className="modal-header border-0 pb-0">
+                <button type="button" className="btn-close" onClick={() => setShowComingSoon(false)}></button>
+              </div>
+              <div className="modal-body text-center pb-5 pt-0 px-4 px-md-5">
+                <div className="mb-4">
+                  <div className="d-inline-flex align-items-center justify-content-center rounded-circle" style={{ width: '80px', height: '80px', backgroundColor: `${primaryColor}15` }}>
+                    <i className="fa-solid fa-rocket fs-1" style={{ color: primaryColor }}></i>
+                  </div>
+                </div>
+                <h3 className="fw-bold text-gray-800 mb-3 tracking-tight">Coming Soon!</h3>
+                <p className="text-secondary mb-4 inc-text-sm">
+                  The Auto-Claim SPF module is currently under development. Stay tuned for exciting new features and seamless automated claims processing.
+                </p>
+                <button 
+                  className="btn px-4 py-2 text-white fw-bold shadow-sm" 
+                  style={{ backgroundColor: primaryColor, borderRadius: '8px' }}
+                  onClick={() => setShowComingSoon(false)}
+                >
+                  Got it, thanks!
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
