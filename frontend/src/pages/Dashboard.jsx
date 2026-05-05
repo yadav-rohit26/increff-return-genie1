@@ -8,12 +8,12 @@ const Dashboard = () => {
     const [marketplace, setMarketplace] = useState('');
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState({});
-    
+
     // UI State: 'upload' | 'processing' | 'success' | 'error'
     const [uiState, setUiState] = useState('upload');
     const [errorText, setErrorText] = useState('');
     const [terminalLogs, setTerminalLogs] = useState([]);
-    
+
     const fileInputRef = useRef(null);
     const syncService = new BaseSyncService();
 
@@ -28,7 +28,7 @@ const Dashboard = () => {
         const newErrors = {};
         if (!marketplace) newErrors.marketplace = true;
         if (!file) newErrors.file = true;
-        
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {
             newErrors.email = "Please enter your email ID";
@@ -48,7 +48,7 @@ const Dashboard = () => {
         if (!validateForm()) return;
 
         setUiState('processing');
-        
+
         const payload = {
             marketplace,
             email,
@@ -91,7 +91,7 @@ const Dashboard = () => {
 
             <div className="row justify-content-center">
                 <div className="col-12 col-lg-8 col-xl-6">
-                    <div 
+                    <div
                         className="increff-card shadow-sm border-0 rounded-1 stagger-2"
                         style={{ borderLeft: `5px solid ${PrimaryColor}` }}
                     >
@@ -109,10 +109,10 @@ const Dashboard = () => {
                                 <div className="row g-4 animate-fade-in">
                                     <div className="col-md-6">
                                         <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Please Select Marketplace</label>
-                                        <select 
+                                        <select
                                             className="form-select border-gray-300 rounded-1 inc-text-sm shadow-none focus-primary"
                                             value={marketplace}
-                                            onChange={(e) => { setMarketplace(e.target.value); setErrors({...errors, marketplace: false}) }}
+                                            onChange={(e) => { setMarketplace(e.target.value); setErrors({ ...errors, marketplace: false }) }}
                                         >
                                             <option value="" disabled>Select Source...</option>
                                             <option value="AMAZON_SC">AMAZON_SC</option>
@@ -125,24 +125,24 @@ const Dashboard = () => {
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Enter Email ID</label>
-                                        <input 
-                                            type="text" 
+                                        <input
+                                            type="text"
                                             className="form-control border-gray-300 rounded-1 inc-text-sm shadow-none focus-primary"
                                             placeholder="e.g. abc@gmail.com"
                                             value={email}
-                                            onChange={(e) => { setEmail(e.target.value); setErrors({...errors, email: false}) }}
+                                            onChange={(e) => { setEmail(e.target.value); setErrors({ ...errors, email: false }) }}
                                         />
                                         {errors.email && <div className="inc-text-xs text-danger mt-1"><i className="fa-solid fa-circle-exclamation"></i> {errors.email}</div>}
                                     </div>
                                     <div className="col-12">
-                                        <div 
+                                        <div
                                             className={`increff-dropzone p-5 text-center border-2 border-dashed rounded-1 transition-all cursor-pointer ${file ? 'drop-zone-active' : ''}`}
                                             onClick={() => fileInputRef.current.click()}
                                         >
-                                            <input 
-                                                type="file" 
-                                                ref={fileInputRef} 
-                                                className="d-none" 
+                                            <input
+                                                type="file"
+                                                ref={fileInputRef}
+                                                className="d-none"
                                                 accept=".csv,.xlsx,.xls"
                                                 onChange={handleFileChange}
                                             />
@@ -150,12 +150,12 @@ const Dashboard = () => {
                                             <p className="inc-text-sm fw-bold text-gray-700 mb-1">
                                                 {file ? `Selected: ${file.name}` : 'Drag Marketplace Report or Click to Browse'}
                                             </p>
-                                            <p className="inc-text-xs text-gray-400">Supported formats: .xlsx, .xls, .csv <br/>(Max Rows Limit : 3000)</p>
+                                            <p className="inc-text-xs text-gray-400">Supported formats: .xlsx, .xls, .csv <br />(Max Rows Limit : 3000)</p>
                                         </div>
                                         {errors.file && <div className="inc-text-xs text-danger mt-1 text-center"><i className="fa-solid fa-circle-exclamation"></i> Please upload a marketplace report</div>}
                                     </div>
                                     <div className="col-12 text-end">
-                                        <button 
+                                        <button
                                             className="btn rounded-1 inc-text-xs fw-bold uppercase tracking-widest px-4 py-2 mt-2"
                                             style={{ backgroundColor: PrimaryColor, color: '#fff' }}
                                             onClick={handleSubmit}
@@ -190,7 +190,7 @@ const Dashboard = () => {
                                     </div>
                                     <h4 className="inc-text-lg fw-bold text-gray-800 mb-2">Sync Process Completed</h4>
                                     <p className="inc-text-sm text-gray-500 mb-4 px-md-5">The output will be delivered to your email. Thank You.</p>
-                                    <button 
+                                    <button
                                         className="btn rounded-1 inc-text-xs fw-bold uppercase px-4 py-2"
                                         style={{ backgroundColor: PrimaryColor, color: '#fff' }}
                                         onClick={resetForm}
@@ -208,7 +208,7 @@ const Dashboard = () => {
                                     </div>
                                     <h4 className="inc-text-lg fw-bold text-gray-800 mb-2">Sync Failed</h4>
                                     <p className="inc-text-sm text-danger mb-4 px-md-5">{errorText}</p>
-                                    <button 
+                                    <button
                                         className="btn btn-outline-danger rounded-1 inc-text-xs fw-bold uppercase px-4 py-2"
                                         onClick={resetForm}
                                     >

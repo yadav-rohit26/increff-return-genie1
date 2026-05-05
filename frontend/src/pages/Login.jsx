@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLoading } from '../context/LoadingContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -9,8 +10,9 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [exiting, setExiting] = useState(false);
-  
+
   const { login, currentUser } = useAuth();
+  const { showLoaderFor } = useLoading();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,18 +30,14 @@ const Login = () => {
     }
 
     const { success, role, message } = await login(username, password);
-    
+
     if (success) {
       setLoading(true);
       setErrorMsg('');
-      
-      // Simulating loading experience and page exit animation
-      setTimeout(() => {
-        setExiting(true);
-        setTimeout(() => {
-          navigate(role === 'admin' ? '/admin' : '/selection');
-        }, 600);
-      }, 1500);
+      setExiting(true);
+      // Compulsory 2-sec themed loader after login
+      await showLoaderFor(2000, 'Preparing your workspace...');
+      navigate(role === 'admin' ? '/admin' : '/selection');
     } else {
       setErrorMsg(message || 'Invalid Credentials');
       setTimeout(() => setErrorMsg(''), 2000);

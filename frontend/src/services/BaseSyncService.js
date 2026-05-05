@@ -28,11 +28,7 @@ export class BaseSyncService {
 
       updateTerminal(`> Establishing secure connection to bridge...`);
       
-      const response = await axios.post(`${API_URL}/api/sync/initialize`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+      const response = await axios.post(`${API_URL}/api/sync/initialize`, formData);
 
       if (response.data.success) {
         updateTerminal(`> Sync Initialized Successfully!`);

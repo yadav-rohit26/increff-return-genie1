@@ -227,3 +227,143 @@ body {
 .stagger-3 { animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards; opacity: 0; }
 .stagger-4 { animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s forwards; opacity: 0; }
 .stagger-5 { animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s forwards; opacity: 0; }
+
+/* ============================================================
+   Return Genie themed loader
+   Base spinner mask animation adapted from a CSS-Tricks pattern.
+   ============================================================ */
+.rg-loader {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--primary), #8b5cf6, var(--secondary), var(--primary));
+    -webkit-mask: radial-gradient(circle closest-side at 50% 40%, #0000 94%, #000);
+            mask: radial-gradient(circle closest-side at 50% 40%, #0000 94%, #000);
+    transform-origin: 50% 40%;
+    animation: rgSpin 1s infinite linear;
+    filter: drop-shadow(0 4px 12px var(--primary-glow));
+}
+
+@keyframes rgSpin {
+    100% { transform: rotate(1turn); }
+}
+
+.rg-loader-stack {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+}
+
+/* Orbiting halo dots around the spinner for a Genie sparkle feel */
+.rg-loader-orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: rgOrbitSpin 4s linear infinite;
+}
+
+.rg-loader-orbit-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    margin-left: -4px;
+    margin-top: -4px;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.rg-orbit-dot-1 {
+    color: var(--primary);
+    background: var(--primary);
+    transform: translate(0, -50px);
+}
+.rg-orbit-dot-2 {
+    color: #8b5cf6;
+    background: #8b5cf6;
+    transform: rotate(120deg) translate(0, -50px);
+}
+.rg-orbit-dot-3 {
+    color: var(--secondary);
+    background: var(--secondary);
+    transform: rotate(240deg) translate(0, -50px);
+}
+
+@keyframes rgOrbitSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.rg-loader-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #475569;
+    margin: 0;
+    animation: rgPulseText 2s ease-in-out infinite;
+}
+
+@keyframes rgPulseText {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+}
+
+/* Fullscreen overlay that hosts the loader */
+.rg-loader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(79, 70, 229, 0.08), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(139, 92, 246, 0.08), transparent 60%),
+        rgba(248, 250, 252, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    animation: fadeIn 0.25s ease-out forwards;
+}
+
+.rg-loader-overlay-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 2.5rem 3rem;
+}
+
+.rg-loader-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0.85;
+}
+
+.rg-loader-genie {
+    width: 38px;
+    height: auto;
+    opacity: 0.95;
+    animation: rgFloat 3s ease-in-out infinite;
+}
+
+.rg-loader-brand-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #64748b;
+}
+
+@keyframes rgFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
+}

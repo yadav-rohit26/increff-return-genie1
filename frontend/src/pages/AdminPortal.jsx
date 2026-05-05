@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLoading } from '../context/LoadingContext';
 
 const randomColor = () => '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
 
@@ -14,6 +15,7 @@ const AVAILABLE_MARKETPLACES = [
 
 const AdminPortal = () => {
   const { selectClient, clients, fetchClients, toggleClientStatus, addClient, updateClient, deleteClient } = useAuth();
+  const { withLoader } = useLoading();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -100,8 +102,8 @@ const AdminPortal = () => {
   };
 
   useEffect(() => {
-    fetchClients();
-  }, [fetchClients]);
+    withLoader(() => fetchClients(), { label: 'Loading client environments...' });
+  }, [fetchClients, withLoader]);
 
   const filteredClients = clients.filter(client =>
     client.clientName.toLowerCase().includes(searchQuery.toLowerCase())

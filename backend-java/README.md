@@ -1,6 +1,6 @@
 # Return Genie — Java Backend
 
-Spring Boot port of the Node.js/Express backend. Same MongoDB schema, same REST contract, same JWT format, so the existing React frontend works against this server unchanged.
+Spring Boot port of the Node.js/Express backend. Same MongoDB schema, same REST contract, same JWT format, so the existing React frontend works against this server unchanged.  
 
 ## Stack
 - Java 17
@@ -20,7 +20,7 @@ Copy [`.env.example`](.env.example) to `.env` (or export the variables in your s
 | `JWT_SECRET`      | `supersecretjwtkey_please_change_in_production`      | HMAC key (auto-padded to 32 bytes)     |
 | `N8N_WEBHOOK_URL` | _empty_                                              | Required for `/api/sync/initialize`    |
 
-Spring Boot does not load `.env` files automatically — set the variables in your shell, your IDE run configuration, or pass them via `-D` JVM args.
+The application imports `.env` as a properties file via `spring.config.import=optional:file:.env[.properties]` in `application.properties`, so a `.env` next to where you launch the app is loaded automatically. You can also export the variables in your shell, set them in your IDE run configuration, or pass them via `-D` JVM args — those take precedence.
 
 ## Run
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { LoadingProvider } from './context/LoadingContext';
 import Layout from './components/Layout';
+import PageLoader from './components/PageLoader';
 import Login from './pages/Login';
 import AdminPortal from './pages/AdminPortal';
 import SelectionHub from './pages/SelectionHub';
@@ -75,11 +77,14 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </AuthProvider>
+    <LoadingProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <AppContent />
+          <PageLoader />
+        </BrowserRouter>
+      </AuthProvider>
+    </LoadingProvider>
   );
 }
 
