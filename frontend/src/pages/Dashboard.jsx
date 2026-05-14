@@ -47,12 +47,24 @@ const Dashboard = () => {
     const handleSubmit = async () => {
         if (!validateForm()) return;
 
+        if (!activeClient) {
+            setErrorText('No active client context. Please re-enter the client portal.');
+            setUiState('error');
+            return;
+        }
+
         setUiState('processing');
-        
+
+        // Strict client isolation: always source clientName and dbId from the
+        // *active* client (works for both client login and admin acting on
+        // behalf of a client). Never derive these from the logged-in user.
         const payload = {
             marketplace,
             email,
-            file: file
+            file: file,
+            activeClientId: activeClient.id || activeClient._id,
+            clientName: activeClient.clientName,
+            dbId: activeClient.dbId
         };
 
         syncService.triggerSync(

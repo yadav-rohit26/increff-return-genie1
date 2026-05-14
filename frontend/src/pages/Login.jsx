@@ -50,15 +50,15 @@ const Login = () => {
     <div className={`increff-bg d-flex align-items-center justify-content-center vh-100 px-3 ${exiting ? 'animate-page-exit' : ''}`}>
       <div className="increff-card bg-white p-4 p-md-5 shadow-sm border-0 rounded-1 animate-fade-in" style={{ maxWidth: '420px', width: '100%' }}>
         <div className="text-center mb-4">
-          <img 
+          <img
             src="https://cdn.prod.website-files.com/64dacf5e829926e42212e23f/67ea4b4e92d4fccc9bfe60c2_65d6d8b6f1213f493da7d67f_Original%2520Logo_Increff%2520(1).png"
-            alt="Increff" 
-            height="36" 
-            className="mb-3" 
+            alt="Increff"
+            height="44"
+            className="mb-3"
           />
-          <div className="d-flex align-items-center justify-content-center gap-0 mt-1">
-            <p className="inc-text-sm fw-bold text-muted uppercase m-0">Return Genie</p>
-            <img src="/resources/genie.png" alt="Return Genie logo" id="Genie" style={{ marginLeft: '4px' }} />
+          <div className="d-flex align-items-center justify-content-center gap-2 mt-1">
+            <p className="fw-bold text-muted uppercase m-0" style={{ fontSize: '1rem', letterSpacing: '0.05em' }}>Return Genie</p>
+            <img src="/resources/genie.png" alt="Return Genie logo" id="Genie" style={{ marginLeft: '4px', width: '50px', height: 'auto' }} />
           </div>
         </div>
 

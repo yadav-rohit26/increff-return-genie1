@@ -106,6 +106,46 @@ router.post('/client', async (req, res) => {
   }
 });
 
+// Admin edit a client (username + optional password)
+router.put('/client/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { username, password } = req.body;
+
+    if (!username || !username.trim()) {
+      return res.status(400).json({ success: false, message: 'Username is required' });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'Client not found' });
+    }
+
+    // Ensure the new username isn't taken by another user
+    if (username !== user.username) {
+      const existing = await User.findOne({ username });
+      if (existing && existing._id.toString() !== id) {
+        return res.status(400).json({ success: false, message: 'Username already exists' });
+      }
+      user.username = username.trim();
+    }
+
+    // Update password only if provided
+    if (password && password.trim()) {
+      user.password = password.trim();
+      // pre-save hook will hash it
+    }
+
+    await user.save();
+
+    const safeUser = await User.findById(id).select('-password');
+    res.json({ success: true, user: safeUser });
+  } catch (error) {
+    console.error('Edit client error:', error);
+    res.status(500).json({ success: false, message: 'Server error' });
+  }
+});
+
 // Admin delete a client
 router.delete('/client/:id', async (req, res) => {
   try {

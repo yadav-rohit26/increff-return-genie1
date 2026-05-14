@@ -7,15 +7,19 @@ const randomColor = () => '#' + Math.floor(Math.random() * 0xFFFFFF).toString(16
 const PODS = ['POD 1', 'POD 2', 'POD 3', 'POD 4'];
 
 const AdminPortal = () => {
-  const { selectClient, clients, fetchClients, toggleClientStatus, addClient, deleteClient } = useAuth();
+  const { selectClient, clients, fetchClients, toggleClientStatus, addClient, deleteClient, editClient } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newClient, setNewClient] = useState({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: 'POD 2', dbId: '' });
+  const [newClient, setNewClient] = useState({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: '', dbId: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [clientToDelete, setClientToDelete] = useState(null);
   const [collapsedPods, setCollapsedPods] = useState({});
+  const [clientToEdit, setClientToEdit] = useState(null);
+  const [editForm, setEditForm] = useState({ username: '', password: '' });
+  const [editError, setEditError] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
 
   const generatePassword = () => {
     const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
@@ -34,7 +38,7 @@ const AdminPortal = () => {
     setIsSubmitting(false);
     if (success) {
       setShowAddForm(false);
-      setNewClient({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: 'POD 2', dbId: '' });
+      setNewClient({ clientName: '', username: '', password: '', themeColor: randomColor(), pod: '', dbId: '' });
     } else {
       setErrorMsg(message);
     }
@@ -60,6 +64,35 @@ const AdminPortal = () => {
 
   const togglePod = (pod) => {
     setCollapsedPods(prev => ({ ...prev, [pod]: !prev[pod] }));
+  };
+
+  const openEdit = (client) => {
+    setEditError('');
+    setEditForm({ username: client.username || '', password: '' });
+    setClientToEdit(client);
+  };
+
+  const executeEdit = async (e) => {
+    e.preventDefault();
+    if (!clientToEdit) return;
+    if (!editForm.username.trim()) {
+      setEditError('Username is required');
+      return;
+    }
+    setIsEditing(true);
+    setEditError('');
+    const payload = { username: editForm.username.trim() };
+    if (editForm.password && editForm.password.trim()) {
+      payload.password = editForm.password.trim();
+    }
+    const { success, message } = await editClient(clientToEdit._id, payload);
+    setIsEditing(false);
+    if (success) {
+      setClientToEdit(null);
+      setEditForm({ username: '', password: '' });
+    } else {
+      setEditError(message || 'Failed to update client');
+    }
   };
 
   useEffect(() => {
@@ -143,13 +176,14 @@ const AdminPortal = () => {
               </div>
             </div>
             <div className="col-md-2">
-              <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Pod</label>
+              <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Select POD</label>
               <select
                 className="form-select inc-text-sm shadow-none focus-primary"
                 value={newClient.pod}
                 onChange={e => setNewClient({ ...newClient, pod: e.target.value })}
                 required
               >
+                <option value="" disabled>Select POD...</option>
                 {PODS.map(pod => (
                   <option key={pod} value={pod}>{pod}</option>
                 ))}
@@ -177,6 +211,51 @@ const AdminPortal = () => {
               <button className="btn btn-light border fw-bold inc-text-xs uppercase tracking-widest" onClick={() => setClientToDelete(null)}>Cancel</button>
               <button className="btn btn-danger fw-bold inc-text-xs uppercase tracking-widest" onClick={executeDelete}>Delete Permanently</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {clientToEdit && (
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center animate-fade-in" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1050 }}>
+          <div className="bg-white p-4 rounded-2 shadow-lg" style={{ maxWidth: '440px', width: '90%' }}>
+            <h5 className="fw-bold text-gray-800 d-flex align-items-center gap-2 mb-3">
+              <i className="fa-solid fa-pen-to-square text-primary"></i> Edit Client
+            </h5>
+            <p className="text-secondary inc-text-sm mb-3">
+              Update credentials for <strong>{clientToEdit.clientName}</strong>.
+            </p>
+            {editError && <div className="alert alert-danger py-2 inc-text-sm">{editError}</div>}
+            <form onSubmit={executeEdit}>
+              <div className="mb-3">
+                <label className="form-label inc-text-xs fw-bold text-secondary uppercase">Username</label>
+                <input
+                  type="text"
+                  className="form-control inc-text-sm shadow-none focus-primary"
+                  value={editForm.username}
+                  onChange={e => setEditForm({ ...editForm, username: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="form-label inc-text-xs fw-bold text-secondary uppercase">New Password</label>
+                <input
+                  type="text"
+                  className="form-control inc-text-sm shadow-none focus-primary"
+                  value={editForm.password}
+                  onChange={e => setEditForm({ ...editForm, password: e.target.value })}
+                  placeholder="Optional: Leave blank to keep the current password"
+                />
+                <div className="inc-text-xs text-secondary mt-1">
+                  Optional: Leave blank to keep the current password.
+                </div>
+              </div>
+              <div className="d-flex justify-content-end gap-2">
+                <button type="button" className="btn btn-light border fw-bold inc-text-xs uppercase tracking-widest" onClick={() => { setClientToEdit(null); setEditError(''); }}>Cancel</button>
+                <button type="submit" className="btn btn-primary fw-bold inc-text-xs uppercase tracking-widest" disabled={isEditing}>
+                  {isEditing ? <><i className="fa-solid fa-circle-notch fa-spin me-2"></i>Saving...</> : 'Save Changes'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -235,6 +314,13 @@ const AdminPortal = () => {
                               title={isDeactivated ? "Reactivate Client" : "Deactivate Client"}
                             >
                               <i className={`fa-solid ${isDeactivated ? 'fa-toggle-off' : 'fa-toggle-on text-success'} fs-5`}></i>
+                            </button>
+                            <button
+                              className="btn btn-link p-0 text-primary ms-1"
+                              onClick={() => openEdit(client)}
+                              title="Edit Client"
+                            >
+                              <i className="fa-solid fa-pen-to-square fs-6"></i>
                             </button>
                             <button
                               className="btn btn-link p-0 text-danger ms-1"

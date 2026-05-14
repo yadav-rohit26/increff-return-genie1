@@ -87,6 +87,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const editClient = async (clientId, payload) => {
+    try {
+      const res = await axios.put(`${API_URL}/api/auth/client/${clientId}`, payload);
+      if (res.data.success) {
+        await fetchClients();
+        return { success: true };
+      }
+      return { success: false, message: res.data.message };
+    } catch (err) {
+      console.error('Failed to edit client:', err);
+      return { success: false, message: err.response?.data?.message || 'Failed to update client' };
+    }
+  };
+
   const toggleClientStatus = async (clientId) => {
     try {
       const res = await axios.post(`${API_URL}/api/auth/toggle-status`, { clientId });
@@ -117,9 +131,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      currentUser, activeClient, clients, fetchClients, addClient, deleteClient,
-      login, logout, selectClient, deactivateClient, toggleClientStatus, loading 
+    <AuthContext.Provider value={{
+      currentUser, activeClient, clients, fetchClients, addClient, deleteClient, editClient,
+      login, logout, selectClient, deactivateClient, toggleClientStatus, loading
     }}>
       {!loading && children}
     </AuthContext.Provider>

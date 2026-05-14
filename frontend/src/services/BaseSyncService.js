@@ -26,7 +26,15 @@ export class BaseSyncService {
       formData.append('email', data.email);
       formData.append('file', data.file);
 
+      // Strict client isolation: always send the *acting* client's identifiers,
+      // resolved from the activeClient context in the UI. The backend uses
+      // these to look up clientName and dbId from the DB and forward to n8n.
+      if (data.activeClientId) formData.append('activeClientId', data.activeClientId);
+      if (data.clientName) formData.append('clientNameHint', data.clientName);
+      if (data.dbId) formData.append('dbIdHint', data.dbId);
+
       updateTerminal(`> Establishing secure connection to bridge...`);
+      updateTerminal(`> Client: ${data.clientName || 'unknown'} (DB ${data.dbId || 'n/a'})`);
       
       const response = await axios.post(`${API_URL}/api/sync/initialize`, formData, {
         headers: {

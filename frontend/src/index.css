@@ -5,15 +5,18 @@
     --primary-hover: #4338CA;
     --primary-glow: rgba(79, 70, 229, 0.4);
     --secondary: #10B981;
-    --bg-gradient-1: #e0e7ff;
-    --bg-gradient-2: #f3e8ff;
-    --bg-gradient-3: #fce7f3;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    scroll-behavior: smooth;
 }
 
 body {
-    background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), #e0f2fe);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    background: #ffffff;
     font-family: 'Outfit', sans-serif;
     -webkit-font-smoothing: antialiased;
     color: #1e293b;
@@ -21,20 +24,14 @@ body {
 }
 
 #Genie {
-    width: 40px;
+    width: 44px;
     height: auto;
     opacity: 0.9;
     background-color: transparent;
 }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
 .increff-bg {
-    background: transparent !important;
+    background: #ffffff !important;
 }
 
 /* Glassmorphism Card styling */
